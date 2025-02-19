@@ -18,3 +18,9 @@ Added Hashing for Files
 - First validate the x86 path
 - Within each file in this path, generate a SHA256 hash
 - With the generated hash, output this along with the file
+
+### 2/18/25 Changes
+Added VirusTotal API
+- Included methods to validate file hash against the VirusTotal API DB to determine malicious files
+- Extract only the needed data from the API call
+- Look for malicious flag and append to an array while also total the number of malicious items

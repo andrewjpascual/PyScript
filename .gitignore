@@ -1,0 +1,39 @@
+# Ignore Python compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore environment and virtualenv directories
+.env
+venv/
+.venv/
+
+# Ignore sensitive configuration files
+*.env
+
+# Ignore API keys or credentials
+secrets.json
+config.json
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore logs and output files
+*.log
+*.out
+*.txt
+
+# Ignore editor and IDE config files
+.vscode/
+.idea/
+*.swp
+
+# Ignore any temporary files
+*.tmp
+*.bak
+*.old
+
+# Ignore directories for operating system metadata
+$RECYCLE.BIN/
