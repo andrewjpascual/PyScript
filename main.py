@@ -1,5 +1,14 @@
 import os
 import hashlib
+import requests
+import json
+from dotenv import load_dotenv
+
+#load environment variables from .env file
+load_dotenv()
+
+#Get the API Key from environmentvariables
+api_key = os.getenv("VIRUSTOTAL_API")
 
 #Validate files
 def scanDirectory(directory):
@@ -13,6 +22,7 @@ def scanDirectory(directory):
                     continue
                 hash = calculate_hash(file_path)
                 print(f"File:   {file_path} | Hash:  {hash}")
+                scanMalware(hash)
     else:
         print(f"This directory '" + directory + "' does not exist! Skipping directory...")
 
@@ -29,7 +39,36 @@ def calculate_hash(filename):
     
     return sha256.hexdigest()  # Return the final hash as a hexadecimal string
 
-    
+#Scan for malware
+def scanMalware(dbHashes):
+    virus_count = 0
+    flags = []
+
+    for dbHash in dbHashes:
+        url = f"https://www.virustotal.com/api/v3/files/{dbHash}"
+        headers = {'accept': 'application/json', 'x-apikey': api_key}
+        try:
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+
+                #Extract only the needed data
+                data = response.json()
+
+                #Retrieve data, Id, attributes
+                file_info = data['data']
+
+                # Get the results from the analysis
+                analysis_results = file_info['attributes']['last_analysis_results']
+
+                # Check if any engine flagged the file as malicious
+                flagged_engines = [engine for engine, result in analysis_results.items() if result['category'] == 'malicious']
+
+                if flagged_engines:
+                    flags.append(flagged_engines)
+                    virus_count+=1
+
+        except Exception as e:
+            print(f"Error during API request: {e}")
 
 def main():
     directoriesToScan = r"C:\Program Files (x86)"
