@@ -1,4 +1,4 @@
-# MalwareScan
+# MalwareShield
 My personal Python scripts and projects
 
 ### 2/10/25
